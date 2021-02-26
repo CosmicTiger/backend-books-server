@@ -1,10 +1,19 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const morgan = require('morgan');
+
+const book = require('./routes/book');
 
 dotenv.config({ path: './config/config.env' });
 // to execute in windows is with SET NODE_ENV=production node server in Linux is NODE_ENV=production node server
 
 const app = express();
+
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+}
+
+app.use('/api/book', book);
 
 const PORT = process.env.PORT || 5000;
 
