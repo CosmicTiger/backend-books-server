@@ -1,49 +1,11 @@
-const http = require('http');
+const dotenv = require('dotenv');
+const express = require('express');
 
-const books = [
-    { 'title': 'Programming Book', 'author': 'Luisangel Marcia' },
-    { 'title': 'The Human Body', 'author': 'Marvin Marcia' },
-    { 'title': 'Harry Potter', 'author': 'JK Rowling' },
-];
+dotenv.config({ path: './config/config.env' });
+// to execute in windows is with SET NODE_ENV=production node server in Linux is NODE_ENV=production node server
 
-const server = http.createServer((request, response) => {
-    const { method, url } = request;
+const app = express();
 
-    let body = [];
+const PORT = process.env.PORT || 5000;
 
-    request.on('data', chunk => {
-        body.push(chunk)
-    })
-        .on('end', () => {
-            body = Buffer.concat(body).toString();
-            let status = 404;
-            const res = {
-                status: 404,
-                data: null
-            };
-
-            if (method === 'GET' && url === '/books') {
-                status = 200;
-                res.status = 200;
-                res.data = books;
-            } else if (method === 'POST' && url === '/books') {
-                status = 200;
-                const { title, author } = JSON.parse(body);
-                books.push({ title, author });
-                res.status = 200;
-                res.data = books;
-            }
-
-            response.writeHead(status, {
-                'Content-Type': 'application/json'
-            });
-
-            response.end(
-                JSON.stringify({ res })
-            );
-        });
-});
-
-const PORT = 5000;
-
-server.listen(PORT, () => console.log('The server is executing'));
+app.listen(PORT, console.log('Server is executing in environment', process.env.NODE_ENV));
