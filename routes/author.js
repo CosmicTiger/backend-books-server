@@ -3,7 +3,13 @@ const express = require('express');
 
 const router = express.Router();
 
-const { createAuthor, getAuthor, getAuthorById } = require('../controllers/author');
+const {
+    createAuthor,
+    getAuthor,
+    getAuthorById,
+    updateAuthor,
+    deleteAuthor
+} = require('../controllers/author');
 
 router
     .route('/')
@@ -12,7 +18,9 @@ router
 
 router
     .route('/:id')
-    .get(getAuthorById);
+    .get(getAuthorById)
+    .put(updateAuthor)
+    .delete(deleteAuthor);
 
 
 module.exports = router;
