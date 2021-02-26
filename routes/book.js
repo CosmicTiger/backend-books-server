@@ -1,39 +1,23 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.status(200).json({
-        status: 200,
-        message: 'It was process correctly'
-    });
-});
+const {
+    getBook,
+    getBooks,
+    createBook,
+    updateBook,
+    deleteBook
+} = require('../controllers/book');
 
-router.get('/:id', (req, res) => {
-    res.status(200).json({
-        status: 200,
-        message: 'Book by Id was returned'
-    });
-});
+router
+    .route('/')
+    .get(getBooks)
+    .post(createBook);
 
-router.post('/', (req, res) => {
-    res.status(200).json({
-        status: 200,
-        message: 'Book was created correctly'
-    });
-});
-
-router.put('/:id', (req, res) => {
-    res.status(200).json({
-        status: 200,
-        message: 'Book was updated correctly'
-    });
-});
-
-router.delete('/:id', (req, res) => {
-    res.status(200).json({
-        status: 200,
-        message: 'Book was deleted correctly'
-    });
-});
+router
+    .route('/:id')
+    .get(getBook)
+    .put(updateBook)
+    .delete(deleteBook);
 
 module.exports = router;
