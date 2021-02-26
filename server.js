@@ -7,12 +7,8 @@ const books = [
 ];
 
 const server = http.createServer((request, response) => {
+    const { method, url } = request;
 
-    response.writeHead(200, {
-        'Content-Type': 'application/json'
-    });
-
-    // console.log(request.headers.authorization);
     let body = [];
 
     request.on('data', chunk => {
@@ -20,12 +16,32 @@ const server = http.createServer((request, response) => {
     })
         .on('end', () => {
             body = Buffer.concat(body).toString();
-            console.log(body);
-        });
+            let status = 404;
+            const res = {
+                status: 404,
+                data: null
+            };
 
-    response.end(
-        JSON.stringify({ data: books })
-    );
+            if (method === 'GET' && url === '/books') {
+                status = 200;
+                res.status = 200;
+                res.data = books;
+            } else if (method === 'POST' && url === '/books') {
+                status = 200;
+                const { title, author } = JSON.parse(body);
+                books.push({ title, author });
+                res.status = 200;
+                res.data = books;
+            }
+
+            response.writeHead(status, {
+                'Content-Type': 'application/json'
+            });
+
+            response.end(
+                JSON.stringify({ res })
+            );
+        });
 });
 
 const PORT = 5000;
