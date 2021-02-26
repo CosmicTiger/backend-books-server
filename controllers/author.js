@@ -13,3 +13,21 @@ exports.createAuthor = async (req, res, next) => {
         res.status(400).json({ status: 400, message: err });
     }
 };
+
+exports.getAuthor = async (req, res, next) => {
+    try {
+        const authorList = await Author.find();
+        res.status(200).json(authorList);
+    } catch (err) {
+        res.status(400).json({ status: 400, message: err });
+    }
+};
+
+exports.getAuthorById = async (req, res, next) => {
+    try {
+        const author = await Author.findById(req.params.id);
+        res.status(200).json(author);
+    } catch (err) {
+        res.status(400).json({ status: 400, message: err });
+    }
+};
