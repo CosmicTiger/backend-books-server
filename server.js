@@ -8,15 +8,18 @@ connectDatabase();
 
 
 const book = require('./routes/book');
+const author = require('./routes/author');
 
 // to execute in windows is with SET NODE_ENV=production node server in Linux is NODE_ENV=production node server
 
 const app = express();
+app.use(express.json());
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
+app.use('/api/authorLibrary', author);
 app.use('/api/book', book);
 
 const PORT = process.env.PORT || 5000;
