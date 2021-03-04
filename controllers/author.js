@@ -28,7 +28,8 @@ exports.getAuthorById = async (req, res, next) => {
         const author = await Author.findById(req.params.id);
         res.status(200).json(author);
     } catch (err) {
-        res.status(400).json({ status: 400, message: err });
+        next(err);
+        // res.status(400).json({ status: 400, message: err });
     }
 };
 
