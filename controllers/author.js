@@ -11,7 +11,7 @@ exports.createAuthor = async (req, res, next) => {
             data: authorData
         });
     } catch (err) {
-        res.status(400).json({ status: 400, message: err });
+        next(new ErrorResponse("Is not possible to create the author " + err.message, 404));
     }
 };
 
@@ -20,7 +20,7 @@ exports.getAuthor = async (req, res, next) => {
         const authorList = await Author.find();
         res.status(200).json(authorList);
     } catch (err) {
-        res.status(400).json({ status: 400, message: err });
+        next(new ErrorResponse("The authors cannot be retrieved " + err.message, 404));
     }
 };
 
@@ -46,12 +46,12 @@ exports.updateAuthor = async (req, res, next) => {
         );
 
         if (!author) {
-            return res.status(400).json({ status: 400 });
+            return next(new ErrorResponse("The author could not be found in the DB with this ID " + req.params.id, 404));
         }
 
         res.status(200).json({ status: 200, data: author });
     } catch (err) {
-        res.status(400).json({ status: 400, message: err });
+        next(new ErrorResponse("The author doesn't exits with this ID " + req.params.id, 404));
     }
 };
 
@@ -60,11 +60,11 @@ exports.deleteAuthor = async (req, res, next) => {
         const author = await Author.findByIdAndDelete(req.params.id);
 
         if (!author) {
-            return res.status(400).json({ status: 400 });
+            return next(new ErrorResponse("The author could not be found in the DB with this ID " + req.params.id, 404));
         }
 
         res.status(200).json({ status: 200 });
     } catch (err) {
-        res.status(400).json({ status: 400, message: err });
+        next(new ErrorResponse("The author doesn't exits with this ID " + req.params.id, 404));
     }
 };
