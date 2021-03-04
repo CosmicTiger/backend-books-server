@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    getBook,
     getBooks,
+    getBookById,
     createBook,
     updateBook,
     deleteBook
@@ -16,7 +16,7 @@ router
 
 router
     .route('/:id')
-    .get(getBook)
+    .get(getBookById)
     .put(updateBook)
     .delete(deleteBook);
 
