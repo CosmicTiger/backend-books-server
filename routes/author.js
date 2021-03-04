@@ -5,7 +5,7 @@ const router = express.Router();
 
 const {
     createAuthor,
-    getAuthor,
+    getAuthors,
     getAuthorById,
     updateAuthor,
     deleteAuthor
@@ -14,7 +14,7 @@ const {
 router
     .route('/')
     .post(createAuthor)
-    .get(getAuthor);
+    .get(getAuthors);
 
 router
     .route('/:id')

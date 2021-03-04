@@ -1,41 +1,89 @@
-exports.getBooks = (req, res, next) => {
-    res.status(200).json({
-        status: 200,
-        message: 'It was process correctly'
-    });
-}
+const Book = require('../models/Book');
+const errorResponse = require('../helpers/errorResponse');
 
-exports.getBook = (req, res, next) => {
-    res.status(200).json({
-        status: 200,
-        message: 'Book by Id was returned'
-    });
-}
+exports.getBooks = async (req, res, next) => {
+    try {
+        const bookList = await Book.find();
 
-exports.createBook = (req, res, next) => {
-    res.status(200).json({
-        status: 200,
-        message: 'Book was created correctly'
-    });
-}
+        res.status(200).json(bookList);
+    } catch (err) {
+        next(
+            new ErrorResponse('The request cannot be processed ' + err.message, 400)
+        );
+    }
+};
 
-exports.createBook = (req, res, next) => {
-    res.status(200).json({
-        status: 200,
-        message: 'Book was created correctly'
-    });
-}
+exports.getBookById = async (req, res, next) => {
+    try {
+        const lookedBook = await Book.findById(req.params.id);
 
-exports.updateBook = (req, res, next) => {
-    res.status(200).json({
-        status: 200,
-        message: 'Book was updated correctly'
-    });
-}
+        if (!lookedBook) {
+            return next(
+                new ErrorResponse('The Book cannot be found', 400)
+            );
+        }
 
-exports.deleteBook = (req, res, next) => {
-    res.status(200).json({
-        status: 200,
-        message: 'Book was deleted correctly'
-    });
-}
+        res.status(200).json(lookedBook);
+    } catch (err) {
+        next(
+            new ErrorResponse('The request cannot be processed ' + err.message, 400)
+        );
+    }
+};
+
+exports.createBook = async (req, res, next) => {
+    try {
+        const createdBook = await Book.create(req.body);
+
+        res.status(200).json({
+            status: 200,
+            data: createdBook
+        });
+    } catch (err) {
+        next(
+            new ErrorResponse('The request cannot be processed ' + err.message, 400)
+        );
+    }
+};
+
+exports.updateBook = async (req, res, next) => {
+    try {
+        const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body);
+
+        if (!deletedBook) {
+            return next(
+                new ErrorResponse("The book doesn't exist", 400)
+            );
+        }
+
+        res.status(200).json({
+            status: 200,
+            data: updatedBook
+        });
+    } catch (err) {
+        next(
+            new ErrorResponse('The request cannot be processed ' + err.message, 400)
+        );
+    }
+};
+
+exports.deleteBook = async (req, res, next) => {
+    try {
+        const deletedBook = await Book.findByIdAndDelete(req.params.id, req.body);
+
+        if (!deletedBook) {
+            return next(
+                new ErrorResponse("The book doesn't exist", 400)
+            );
+        }
+
+        res.status(200).json({
+            status: 200,
+            data: deletedBook
+        });
+    } catch (err) {
+        next(
+            new ErrorResponse('The request cannot be processed ' + err.message, 400)
+        );
+    }
+};

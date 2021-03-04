@@ -1,5 +1,5 @@
-const ErrorResponse = require("../helpers/errorResponse");
 const Author = require('../models/Author');
+const ErrorResponse = require("../helpers/errorResponse");
 
 exports.createAuthor = async (req, res, next) => {
     try {
@@ -15,7 +15,7 @@ exports.createAuthor = async (req, res, next) => {
     }
 };
 
-exports.getAuthor = async (req, res, next) => {
+exports.getAuthors = async (req, res, next) => {
     try {
         const authorList = await Author.find();
         res.status(200).json(authorList);
