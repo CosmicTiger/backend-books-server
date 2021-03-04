@@ -6,7 +6,8 @@ const {
     getBookById,
     createBook,
     updateBook,
-    deleteBook
+    deleteBook,
+    pagination
 } = require('../controllers/book');
 
 router
@@ -19,5 +20,9 @@ router
     .get(getBookById)
     .put(updateBook)
     .delete(deleteBook);
+
+router
+    .route('/pagination')
+    .post(pagination);
 
 module.exports = router;
