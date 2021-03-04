@@ -1,20 +1,6 @@
 const Author = require('../models/Author');
 const ErrorResponse = require("../helpers/errorResponse");
 
-exports.createAuthor = async (req, res, next) => {
-    try {
-        const authorData = await Author.create(req.body);
-
-        console.log(authorData);
-        res.status(200).json({
-            status: 200,
-            data: authorData
-        });
-    } catch (err) {
-        next(new ErrorResponse("Is not possible to create the author " + err.message, 404));
-    }
-};
-
 exports.getAuthors = async (req, res, next) => {
     try {
         const authorList = await Author.find();
@@ -35,6 +21,19 @@ exports.getAuthorById = async (req, res, next) => {
         res.status(200).json(author);
     } catch (err) {
         next(new ErrorResponse("The author doesn't exits with this ID " + req.params.id, 404));
+    }
+};
+
+exports.createAuthor = async (req, res, next) => {
+    try {
+        const authorData = await Author.create(req.body);
+
+        res.status(200).json({
+            status: 200,
+            data: authorData
+        });
+    } catch (err) {
+        next(new ErrorResponse("Is not possible to create the author " + err.message, 404));
     }
 };
 
