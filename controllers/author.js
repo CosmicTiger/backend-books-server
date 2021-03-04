@@ -1,3 +1,4 @@
+const ErrorResponse = require("../helpers/errorResponse");
 const Author = require('../models/Author');
 
 exports.createAuthor = async (req, res, next) => {
@@ -26,10 +27,14 @@ exports.getAuthor = async (req, res, next) => {
 exports.getAuthorById = async (req, res, next) => {
     try {
         const author = await Author.findById(req.params.id);
+
+        if (!author) {
+            return next(new ErrorResponse("The author could not be found in the DB with this ID " + req.params.id, 404));
+        }
+
         res.status(200).json(author);
     } catch (err) {
-        next(err);
-        // res.status(400).json({ status: 400, message: err });
+        next(new ErrorResponse("The author doesn't exits with this ID " + req.params.id, 404));
     }
 };
 
